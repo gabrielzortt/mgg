@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGG Corretora - Planos e Viagens</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#fff;color:#222;}
+header{position:relative;background:#ff4d4d;color:#fff;padding:2rem;text-align:center;overflow:hidden;}
+header img#logo{height:80px;position:absolute;top:10px;left:20px;}
+header h1{font-size:3rem;margin:0;animation:fadeIn 2s;}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+#slider{position:relative;width:100%;height:400px;margin-top:1rem;border-radius:15px;overflow:hidden;}
+.slide{position:absolute;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s;}
+.slide.active{opacity:1;}
+section{max-width:1200px;margin:auto;padding:2rem;}
+h2{margin-bottom:20px;font-size:2rem;color:#ff4d4d;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;}
+.card{background:white;padding:1rem;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.2);transition:transform 0.3s;}
+.card:hover{transform:scale(1.05);}
+.card img{width:100%;height:200px;object-fit:cover;border-radius:10px;}
+.card video{width:100%;height:200px;border-radius:10px;}
+.card iframe{width:100%;height:200px;border-radius:10px;}
+footer{background:#222;color:white;padding:2rem;text-align:center;margin-top:2rem;}
+button.whatsapp-btn{background:#25d366;color:white;border:none;padding:0.5rem 1rem;border-radius:5px;font-weight:bold;cursor:pointer;margin-top:10px;}
+button.whatsapp-btn:hover{background:#128c7e;}
+</style>
+</head>
+<body>
+
+<header>
+<img id="logo" src="" alt="Logo MGG">
+<h1 id="banner-texto">CONTEÚDO</h1>
+<div id="slider"></div>
+</header>
+
+<section id="apresentacao">
+<h2>Apresentação</h2>
+<p id="apresentacao-texto">CONTEÚDO</p>
+</section>
+
+<section id="produtos">
+<h2>Planos de Saúde</h2>
+<div class="grid" id="produtos-lista"></div>
+</section>
+
+<section id="viagens">
+<h2>Viagens</h2>
+<div class="grid" id="viagens-lista"></div>
+</section>
+
+<section id="videos">
+<h2>Vídeos / Anúncios</h2>
+<div class="grid" id="videos-lista"></div>
+</section>
+
+<footer>
+<p id="rodape-texto">CONTEÚDO</p>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBt2_hFx7ppxdqchzOhmMWXFrsKXsORy5U",
+authDomain: "mamae-6ced3.firebaseapp.com",
+projectId: "mamae-6ced3",
+storageBucket: "mamae-6ced3.appspot.com",
+messagingSenderId: "783662269266",
+appId: "1:783662269266:web:bd7dd7e5f31c13801ff08b",
+measurementId: "G-QMPJJ45C50"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+async function carregarSite(){
+  const siteSnap = await getDoc(doc(db,"site","conteudo"));
+  if(siteSnap.exists()){
+    const d = siteSnap.data();
+    document.getElementById("banner-texto").innerText=d.banner||"CONTEÚDO";
+    document.getElementById("apresentacao-texto").innerText=d.apresentacao||"CONTEÚDO";
+    document.getElementById("rodape-texto").innerText=d.rodape||"CONTEÚDO";
+    if(d.logo){
+      document.getElementById("logo").src=await getDownloadURL(ref(storage,d.logo));
+    }
+    if(d.slider && d.slider.length>0){
+      const sliderDiv = document.getElementById("slider");
+      sliderDiv.innerHTML="";
+      for(const s of d.slider){
+        const url = await getDownloadURL(ref(storage,s));
+        const img = document.createElement("img");
+        img.src=url;
+        img.classList.add("slide");
+        sliderDiv.appendChild(img);
+      }
+      let idx=0;
+      setInterval(()=>{ 
+        const slides=document.querySelectorAll(".slide");
+        slides.forEach(sl=>sl.classList.remove("active"));
+        slides[idx].classList.add("active");
+        idx=(idx+1)%slides.length;
+      },4000);
+    }
+  }
+  carregarProdutos();
+  carregarViagens();
+  carregarVideos();
+}
+
+async function carregarProdutos(){
+  const produtosSnap = await getDocs(collection(db,"produtos"));
+  const produtosDiv = document.getElementById("produtos-lista");
+  produtosDiv.innerHTML="";
+  produtosSnap.forEach(async(docSnap)=>{
+    const p = docSnap.data();
+    let imgUrl="";
+    if(p.imagem){ imgUrl = await getDownloadURL(ref(storage,p.imagem)); }
+    produtosDiv.innerHTML+=`
+    <div class="card">
+      <img src="${imgUrl}" alt="${p.nome}">
+      <h3>${p.nome}</h3>
+      <p>${p.descricao}</p>
+      <p><strong>R$ ${p.preco}</strong></p>
+      ${p.whatsapp?`<a href="${p.whatsapp}" target="_blank"><button class="whatsapp-btn">Contato</button></a>`:""}
+    </div>`;
+  });
+}
+
+async function carregarViagens(){
+  const viagensSnap = await getDocs(collection(db,"viagens"));
+  const viagensDiv = document.getElementById("viagens-lista");
+  viagensDiv.innerHTML="";
+  viagensSnap.forEach(async(docSnap)=>{
+    const v = docSnap.data();
+    let imgUrl="";
+    if(v.imagem){ imgUrl = await getDownloadURL(ref(storage,v.imagem)); }
+    viagensDiv.innerHTML+=`
+    <div class="card">
+      <img src="${imgUrl}" alt="${v.nome}">
+      <h3>${v.nome}</h3>
+      <p>${v.descricao}</p>
+      <p><strong>R$ ${v.preco}</strong></p>
+      ${v.whatsapp?`<a href="${v.whatsapp}" target="_blank"><button class="whatsapp-btn">Contato</button></a>`:""}
+    </div>`;
+  });
+}
+
+async function carregarVideos(){
+  const videosSnap = await getDocs(collection(db,"videos"));
+  const videosDiv = document.getElementById("videos-lista");
+  videosDiv.innerHTML="";
+  videosSnap.forEach(async(docSnap)=>{
+    const v = docSnap.data();
+    let videoUrl="";
+    if(v.arquivo){ videoUrl = await getDownloadURL(ref(storage,v.arquivo)); }
+    videosDiv.innerHTML+=`
+    <div class="card">
+      ${videoUrl?`<video controls src="${videoUrl}"></video>`:v.link?`<iframe src="${v.link}" frameborder="0" allowfullscreen></iframe>`:""}
+    </div>`;
+  });
+}
+
+window.onload = carregarSite;
+</script>
+
+</body>
+</html>
