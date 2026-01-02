@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin MGG Corretora - Ultra Avançado</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f0f0f0;color:#222;margin:0;padding:0;}
+h2,h3{color:#ff4d4d;}
+#admin-panel{display:none;padding:2rem;max-width:1000px;margin:auto;}
+form,input,textarea,button{display:block;width:100%;margin-bottom:10px;padding:0.7rem;font-size:1rem;}
+button{background:#ff4d4d;color:white;border:none;border-radius:5px;cursor:pointer;}
+button:hover{background:#cc0000;}
+.section-box{background:white;padding:1rem;border-radius:10px;margin-bottom:1rem;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+.preview{background:#fff;padding:1rem;border-radius:10px;margin-bottom:1rem;box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+.preview img, .preview video{width:100%;border-radius:10px;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<h2>Login Admin</h2>
+<form id="login-form">
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="senha" placeholder="Senha">
+<button type="submit">Entrar</button>
+</form>
+
+<div id="admin-panel">
+<button id="logout-btn">Sair</button>
+
+<div class="section-box">
+<h3>Logo e Banner</h3>
+<input type="file" id="logo-img">
+<input type="text" id="banner-texto" placeholder="Texto do Banner">
+<input type="file" id="banner-slider" multiple>
+<button id="salvar-site">Salvar Conteúdo</button>
+<div class="preview" id="preview-slider"></div>
+</div>
+
+<div class="section-box">
+<h3>Apresentação / Rodapé</h3>
+<textarea id="apresentacao-texto" placeholder="Apresentação"></textarea>
+<textarea id="rodape-texto" placeholder="Rodapé"></textarea>
+</div>
+
+<div class="section-box">
+<h3>Produtos / Planos</h3>
+<input type="text" id="produto-nome" placeholder="Nome">
+<textarea id="produto-descricao" placeholder="Descrição"></textarea>
+<input type="text" id="produto-preco" placeholder="Preço">
+<input type="text" id="produto-whatsapp" placeholder="Link WhatsApp">
+<input type="file" id="produto-imagem">
+<button id="add-produto">Adicionar Produto</button>
+<div id="produtos-preview"></div>
+</div>
+
+<div class="section-box">
+<h3>Viagens</h3>
+<input type="text" id="viagem-nome" placeholder="Nome">
+<textarea id="viagem-descricao" placeholder="Descrição"></textarea>
+<input type="text" id="viagem-preco" placeholder="Preço">
+<input type="text" id="viagem-whatsapp" placeholder="Link WhatsApp">
+<input type="file" id="viagem-imagem">
+<button id="add-viagem">Adicionar Viagem</button>
+<div id="viagens-preview"></div>
+</div>
+
+<div class="section-box">
+<h3>Vídeos / Anúncios</h3>
+<input type="text" id="video-link" placeholder="Link YouTube (opcional)">
+<input type="file" id="video-arquivo">
+<button id="add-video">Adicionar Vídeo</button>
+<div id="videos-preview"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, doc, setDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBt2_hFx7ppxdqchzOhmMWXFrsKXsORy5U",
+authDomain: "mamae-6ced3.firebaseapp.com",
+projectId: "mamae-6ced3",
+storageBucket: "mamae-6ced3.appspot.com",
+messagingSenderId: "783662269266",
+appId: "1:783662269266:web:bd7dd7e5f31c13801ff08b",
+measurementId: "G-QMPJJ45C50"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const auth = getAuth(app);
+
+// Login
+document.getElementById("login-form").addEventListener("submit",async(e)=>{
+e.preventDefault();
+const email=document.getElementById("email").value;
+const senha=document.getElementById("senha").value;
+try{await signInWithEmailAndPassword(auth,email,senha);
+document.getElementById("admin-panel").style.display="block";
+document.getElementById("login-form").style.display="none";}
+catch(err){alert("Erro: "+err.message);}
+});
+document.getElementById("logout-btn").addEventListener("click",async()=>{
+await signOut(auth);
+document.getElementById("admin-panel").style.display="none";
+document.getElementById("login-form").style.display="block";
+});
+
+// Salvar site e slider
+document.getElementById("salvar-site").addEventListener("click",async()=>{
+let bannerFiles=document.getElementById("banner-slider").files;
+let sliderPaths=[];
+for(let f of bannerFiles){ const sref=ref(storage,"slider/"+f.name); await uploadBytes(sref,f); sliderPaths.push("slider/"+f.name);}
+let logoFile=document.getElementById("logo-img").files[0]; let logoPath="";
+if(logoFile){ const sref=ref(storage,"logo/"+logoFile.name); await uploadBytes(sref,logoFile); logoPath="logo/"+logoFile.name;}
+await setDoc(doc(db,"site","conteudo"),{
+banner:document.getElementById("banner-texto").value,
+apresentacao:document.getElementById("apresentacao-texto").value,
+rodape:document.getElementById("rodape-texto").value,
+slider:sliderPaths,
+logo:logoPath
+});
+alert("Conteúdo salvo!");
+});
+
+// Adicionar produto
+document.getElementById("add-produto").addEventListener("click",async()=>{
+let img=document.getElementById("produto-imagem").files[0]; let imgPath="";
+if(img){ const sref=ref(storage,"produtos/"+img.name); await uploadBytes(sref,img); imgPath="produtos/"+img.name; }
+await addDoc(collection(db,"produtos"),{
+nome:document.getElementById("produto-nome").value,
+descricao:document.getElementById("produto-descricao").value,
+preco:document.getElementById("produto-preco").value,
+imagem:imgPath,
+whatsapp:document.getElementById("produto-whatsapp").value
+});
+alert("Produto adicionado!");
+});
+
+// Adicionar viagem
+document.getElementById("add-viagem").addEventListener("click",async()=>{
+let img=document.getElementById("viagem-imagem").files[0]; let imgPath="";
+if(img){ const sref=ref(storage,"viagens/"+img.name); await uploadBytes(sref,img); imgPath="viagens/"+img.name; }
+await addDoc(collection(db,"viagens"),{
+nome:document.getElementById("viagem-nome").value,
+descricao:document.getElementById("viagem-descricao").value,
+preco:document.getElementById("viagem-preco").value,
+imagem:imgPath,
+whatsapp:document.getElementById("viagem-whatsapp").value
+});
+alert("Viagem adicionada!");
+});
+
+// Adicionar vídeo
+document.getElementById("add-video").addEventListener("click",async()=>{
+let videoFile=document.getElementById("video-arquivo").files[0]; let videoPath="";
+if(videoFile){ const sref=ref(storage,"videos/"+videoFile.name); await uploadBytes(sref,videoFile); videoPath="videos/"+videoFile.name;}
+await addDoc(collection(db,"videos"),{
+link:document.getElementById("video-link").value,
+arquivo:videoPath
+});
+alert("Vídeo adicionado!");
+});
+</script>
+
+</body>
+</html>
