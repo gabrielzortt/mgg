@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MGG Corretora | Planos de Saúde & Viagens</title>
+<title>MGG Corretora | Saúde & Viagens</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+html{scroll-behavior:smooth}
 body{background:#fff;color:#222;overflow-x:hidden}
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 header{
 position:fixed;
 top:0;
@@ -18,9 +19,9 @@ width:100%;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:18px 8%;
-background:rgba(255,255,255,0.9);
-backdrop-filter:blur(10px);
+padding:20px 8%;
+background:rgba(255,255,255,0.85);
+backdrop-filter:blur(12px);
 z-index:1000;
 border-bottom:1px solid #eee;
 }
@@ -37,9 +38,8 @@ transition:.3s;
 
 nav a:hover{opacity:.6}
 
-/* ===== HERO PREMIUM ===== */
+/* ================= HERO CINEMÁTICO ================= */
 .hero{
-margin-top:100px;
 height:100vh;
 position:relative;
 display:flex;
@@ -50,21 +50,19 @@ color:#fff;
 overflow:hidden;
 }
 
-.hero::before{
-content:"";
+.hero-bg{
 position:absolute;
 inset:0;
 background:url('IMG-20260228-WA0033.jpg') center/cover no-repeat;
-filter:brightness(.55);
-transform:scale(1.1);
-animation:slowZoom 18s ease-in-out infinite alternate;
+transform:scale(1.15);
+animation:zoom 20s ease-in-out infinite alternate;
+filter:brightness(.5);
 }
 
-.hero::after{
-content:"";
+.hero-overlay{
 position:absolute;
 inset:0;
-background:linear-gradient(135deg,rgba(179,0,0,.85),rgba(120,0,0,.75));
+background:linear-gradient(135deg,rgba(179,0,0,.9),rgba(120,0,0,.7));
 }
 
 .hero-content{
@@ -76,119 +74,120 @@ animation:fadeUp 1.2s ease;
 }
 
 .hero-content img{
-width:220px;
-margin-bottom:35px;
-filter:drop-shadow(0 30px 70px rgba(0,0,0,.6));
+width:240px;
+margin-bottom:40px;
+filter:drop-shadow(0 40px 80px rgba(0,0,0,.6));
 animation:float 4s ease-in-out infinite;
 }
 
 .hero-content h1{
-font-size:3.2rem;
+font-size:3.5rem;
 font-weight:800;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 .hero-content p{
-font-size:1.15rem;
-margin-bottom:35px;
+font-size:1.2rem;
+margin-bottom:40px;
 }
 
 .btn{
 background:#fff;
 color:#b30000;
-padding:16px 40px;
+padding:18px 45px;
 border:none;
 border-radius:50px;
 font-weight:700;
 cursor:pointer;
 transition:.3s;
-box-shadow:0 20px 50px rgba(0,0,0,.3);
+box-shadow:0 25px 60px rgba(0,0,0,.3);
 }
 
-.btn:hover{transform:translateY(-5px)}
+.btn:hover{
+transform:translateY(-6px);
+}
 
-/* ===== SERVIÇOS ===== */
-section{padding:120px 8%}
+/* ================= SERVIÇOS PREMIUM ================= */
+section{padding:140px 8%}
 
 .section-title{
 text-align:center;
-font-size:2.6rem;
+font-size:2.8rem;
 color:#b30000;
-margin-bottom:80px;
+margin-bottom:90px;
 font-weight:800;
 }
 
 .services{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:50px;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:60px;
 }
 
 .card{
 background:#fff;
-padding:50px;
-border-radius:30px;
-box-shadow:0 25px 70px rgba(0,0,0,.06);
-transition:.4s;
+padding:55px;
+border-radius:35px;
+box-shadow:0 30px 80px rgba(0,0,0,.05);
+transition:.5s;
 text-align:center;
-border:1px solid #f3f3f3;
+border:1px solid #f2f2f2;
 }
 
 .card:hover{
-transform:translateY(-12px);
-box-shadow:0 35px 90px rgba(179,0,0,.18);
+transform:translateY(-15px);
+box-shadow:0 45px 110px rgba(179,0,0,.2);
 }
 
 .card h3{
 color:#b30000;
-margin-bottom:15px;
-font-size:1.4rem;
+margin-bottom:20px;
+font-size:1.5rem;
 }
 
-/* ===== PARALLAX VIAGENS ===== */
+/* ================= PARALLAX VIAJENS ARTÍSTICO ================= */
 .parallax{
-height:500px;
+height:600px;
 position:relative;
-background:url('IMG-20260228-WA0032.jpg') center/cover fixed;
-margin:0 8% 140px 8%;
-border-radius:40px;
+margin:0 8% 160px 8%;
+border-radius:50px;
 overflow:hidden;
-box-shadow:0 40px 100px rgba(179,0,0,.25);
+box-shadow:0 50px 120px rgba(179,0,0,.25);
 }
 
-.parallax::before{
-content:"";
+.parallax-bg{
 position:absolute;
 inset:0;
-background:linear-gradient(to right,rgba(179,0,0,.6),rgba(179,0,0,.2));
+background:url('IMG-20260228-WA0032.jpg') center/cover fixed;
+filter:brightness(.7);
+}
+
+.parallax-overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(to right,rgba(179,0,0,.7),rgba(179,0,0,.3));
 }
 
 .parallax-content{
 position:absolute;
 z-index:2;
 color:#fff;
-bottom:50px;
-left:60px;
-max-width:500px;
+bottom:70px;
+left:80px;
+max-width:550px;
 }
 
 .parallax-content h2{
-font-size:2.2rem;
-margin-bottom:15px;
+font-size:2.5rem;
+margin-bottom:20px;
 }
 
-/* ===== SOBRE ===== */
+/* ================= SOBRE IMPACTO ================= */
 .sobre{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:80px;
+gap:100px;
 align-items:center;
-}
-
-.sobre-text h2{
-color:#b30000;
-font-size:2.3rem;
-margin-bottom:20px;
 }
 
 .sobre-img{
@@ -197,65 +196,72 @@ position:relative;
 
 .sobre-img img{
 width:100%;
-border-radius:35px;
-box-shadow:0 35px 90px rgba(0,0,0,.1);
+border-radius:40px;
+box-shadow:0 40px 100px rgba(0,0,0,.1);
 transition:.6s;
 }
 
 .sobre-img img:hover{
-transform:scale(1.03);
+transform:scale(1.05);
 }
 
-/* ===== FOOTER ===== */
+.sobre-text h2{
+color:#b30000;
+font-size:2.5rem;
+margin-bottom:25px;
+}
+
+/* ================= FOOTER ================= */
 footer{
 background:#b30000;
 color:#fff;
 text-align:center;
-padding:90px 20px;
+padding:110px 20px;
 }
 
 footer img{
-height:100px;
-margin-bottom:25px;
+height:110px;
+margin-bottom:30px;
 filter:brightness(0) invert(1);
 }
 
 .whatsapp{
 position:fixed;
-bottom:30px;
-right:30px;
+bottom:35px;
+right:35px;
 background:#25D366;
 color:#fff;
-padding:22px;
+padding:25px;
 border-radius:50%;
-font-size:22px;
+font-size:24px;
 text-decoration:none;
-box-shadow:0 20px 45px rgba(0,0,0,.4);
+box-shadow:0 30px 70px rgba(0,0,0,.4);
 transition:.3s;
 }
 
-.whatsapp:hover{transform:scale(1.15)}
+.whatsapp:hover{transform:scale(1.2)}
 
+/* ================= ANIMAÇÕES ================= */
 @keyframes fadeUp{
-from{opacity:0;transform:translateY(40px)}
+from{opacity:0;transform:translateY(50px)}
 to{opacity:1;transform:translateY(0)}
 }
 
 @keyframes float{
 0%,100%{transform:translateY(0)}
-50%{transform:translateY(-12px)}
+50%{transform:translateY(-15px)}
 }
 
-@keyframes slowZoom{
-from{transform:scale(1.1)}
-to{transform:scale(1.2)}
+@keyframes zoom{
+from{transform:scale(1.15)}
+to{transform:scale(1.25)}
 }
 
 @media(max-width:900px){
-.hero{height:auto;padding:120px 20px}
+.hero-content h1{font-size:2.3rem}
 .sobre{grid-template-columns:1fr;text-align:center}
-.parallax{background-attachment:scroll}
-.parallax-content{left:30px;bottom:30px}
+.parallax-bg{background-attachment:scroll}
+.parallax-content{left:30px;bottom:40px}
 }
 </style>
 </head>
@@ -271,10 +277,12 @@ to{transform:scale(1.2)}
 </header>
 
 <section class="hero">
+<div class="hero-bg"></div>
+<div class="hero-overlay"></div>
 <div class="hero-content">
 <img src="IMG-20260228-WA0031.jpg" alt="Logo MGG">
 <h1>Proteção em Saúde. Liberdade Para Viajar.</h1>
-<p>Uma corretora moderna que une segurança, planejamento e realização de sonhos.</p>
+<p>Segurança para sua família. Planejamento para seus sonhos. Atendimento humano e excelência profissional.</p>
 <a href="https://wa.me/5592994246242" target="_blank">
 <button class="btn">Falar no WhatsApp</button>
 </a>
@@ -282,34 +290,36 @@ to{transform:scale(1.2)}
 </section>
 
 <section id="servicos">
-<h2 class="section-title">Nossas Soluções</h2>
+<h2 class="section-title">Soluções Inteligentes</h2>
 <div class="services">
 <div class="card">
 <h3>Planos de Saúde</h3>
-<p>Individuais, familiares e empresariais com as melhores operadoras do mercado.</p>
+<p>Individuais, familiares e empresariais com as melhores operadoras.</p>
 </div>
 <div class="card">
 <h3>Agência de Viagens</h3>
-<p>Passagens, pacotes completos e seguro viagem com total segurança.</p>
+<p>Pacotes, passagens e seguro viagem com total tranquilidade.</p>
 </div>
 <div class="card">
 <h3>Consultoria Premium</h3>
-<p>Atendimento humano e personalizado para cada necessidade.</p>
+<p>Atendimento personalizado para encontrar a melhor escolha.</p>
 </div>
 </div>
 </section>
 
 <div class="parallax">
+<div class="parallax-bg"></div>
+<div class="parallax-overlay"></div>
 <div class="parallax-content">
-<h2>Viaje com Segurança e Tranquilidade</h2>
-<p>Planejamento completo para você focar apenas em viver experiências incríveis.</p>
+<h2>Viaje com Segurança e Confiança</h2>
+<p>Experiências incríveis começam com planejamento profissional.</p>
 </div>
 </div>
 
 <section id="sobre" class="sobre">
 <div class="sobre-text">
 <h2>Sobre a MGG</h2>
-<p>A MGG nasceu com o propósito de cuidar de famílias e realizar sonhos. Com ética, transparência e dedicação, oferecemos segurança em saúde e experiências inesquecíveis em viagens.</p>
+<p>A MGG nasceu com o propósito de cuidar de famílias e realizar sonhos. Atuamos com ética, transparência e dedicação, oferecendo segurança em saúde e experiências inesquecíveis em viagens.</p>
 </div>
 <div class="sobre-img">
 <img src="IMG-20260228-WA0033.jpg" alt="Imagem institucional MGG">
