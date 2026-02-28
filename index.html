@@ -1,338 +1,383 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MGG Corretora | Saúde & Viagens</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Sua Empresa | Saúde & Viagens</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-html{scroll-behavior:smooth}
-body{background:#fff;color:#222;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
-/* ================= HEADER ================= */
+:root{
+--primary:#8B0000;
+--deep:#4d0000;
+--text:#111;
+}
+
+html{scroll-behavior:smooth;}
+body{background:white;color:var(--text);overflow-x:hidden;}
+
+/* LOADER SUM */
+
+#loader{
+position:fixed;
+inset:0;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.loader{
+width:60px;
+height:60px;
+border-radius:50%;
+border:3px solid #eee;
+border-top:3px solid var(--primary);
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{100%{transform:rotate(360deg);}}
+
+/* HEADER */
+
 header{
 position:fixed;
 top:0;
 width:100%;
+padding:25px 8%;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px 8%;
-background:rgba(255,255,255,0.85);
-backdrop-filter:blur(12px);
+transition:.5s cubic-bezier(.16,1,.3,1);
 z-index:1000;
-border-bottom:1px solid #eee;
 }
 
-header img{height:75px}
+header.scrolled{
+background:rgba(255,255,255,.85);
+backdrop-filter:blur(15px);
+box-shadow:0 20px 60px rgba(0,0,0,.05);
+}
+
+header img{
+height:55px;
+}
 
 nav a{
-text-decoration:none;
-color:#b30000;
 margin-left:35px;
-font-weight:600;
-transition:.3s;
+text-decoration:none;
+color:var(--primary);
+font-weight:500;
+position:relative;
 }
 
-nav a:hover{opacity:.6}
+nav a::after{
+content:"";
+position:absolute;
+bottom:-6px;
+left:0;
+width:0%;
+height:2px;
+background:linear-gradient(to right,var(--primary),var(--deep));
+transition:.4s;
+}
 
-/* ================= HERO CINEMÁTICO ================= */
+nav a:hover::after{width:100%;}
+
+/* HERO SUPREME */
+
 .hero{
 height:100vh;
-position:relative;
+background:url('hero.jpg') center/cover fixed;
 display:flex;
 align-items:center;
 justify-content:center;
-text-align:center;
-color:#fff;
+position:relative;
 overflow:hidden;
+text-align:center;
 }
 
-.hero-bg{
+.hero::before{
+content:"";
 position:absolute;
 inset:0;
-background:url('IMG-20260228-WA0033.jpg') center/cover no-repeat;
-transform:scale(1.15);
-animation:zoom 20s ease-in-out infinite alternate;
-filter:brightness(.5);
-}
-
-.hero-overlay{
-position:absolute;
-inset:0;
-background:linear-gradient(135deg,rgba(179,0,0,.9),rgba(120,0,0,.7));
+background:linear-gradient(140deg, rgba(77,0,0,.95), rgba(139,0,0,.7));
 }
 
 .hero-content{
 position:relative;
-z-index:2;
-max-width:900px;
-padding:0 20px;
-animation:fadeUp 1.2s ease;
-}
-
-.hero-content img{
-width:240px;
-margin-bottom:40px;
-filter:drop-shadow(0 40px 80px rgba(0,0,0,.6));
-animation:float 4s ease-in-out infinite;
+color:white;
+max-width:850px;
+animation:fadeUp 1.5s cubic-bezier(.16,1,.3,1) forwards;
 }
 
 .hero-content h1{
-font-size:3.5rem;
-font-weight:800;
+font-size:3.4rem;
+font-weight:600;
 margin-bottom:25px;
 }
 
 .hero-content p{
-font-size:1.2rem;
-margin-bottom:40px;
+opacity:.9;
+font-size:1.15rem;
+margin-bottom:35px;
 }
 
 .btn{
-background:#fff;
-color:#b30000;
-padding:18px 45px;
-border:none;
-border-radius:50px;
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-box-shadow:0 25px 60px rgba(0,0,0,.3);
+padding:17px 50px;
+background:white;
+color:var(--primary);
+border-radius:60px;
+font-weight:600;
+text-decoration:none;
+transition:.5s cubic-bezier(.16,1,.3,1);
+position:relative;
+overflow:hidden;
 }
 
 .btn:hover{
-transform:translateY(-6px);
+transform:translateY(-8px);
+box-shadow:0 30px 70px rgba(139,0,0,.5);
+background:var(--primary);
+color:white;
 }
 
-/* ================= SERVIÇOS PREMIUM ================= */
-section{padding:140px 8%}
+/* SECTIONS */
+
+section{
+padding:170px 8%;
+}
 
 .section-title{
 text-align:center;
-font-size:2.8rem;
-color:#b30000;
-margin-bottom:90px;
-font-weight:800;
+margin-bottom:100px;
 }
 
-.services{
+.section-title h2{
+font-size:2.7rem;
+color:var(--primary);
+}
+
+/* CARDS SUM */
+
+.cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:60px;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:70px;
 }
 
 .card{
-background:#fff;
-padding:55px;
+background:white;
 border-radius:35px;
-box-shadow:0 30px 80px rgba(0,0,0,.05);
-transition:.5s;
-text-align:center;
-border:1px solid #f2f2f2;
+overflow:hidden;
+box-shadow:0 30px 90px rgba(0,0,0,.05);
+transition:.7s cubic-bezier(.16,1,.3,1);
+opacity:0;
+transform:translateY(100px);
+position:relative;
+}
+
+.card.show{
+opacity:1;
+transform:translateY(0);
 }
 
 .card:hover{
-transform:translateY(-15px);
-box-shadow:0 45px 110px rgba(179,0,0,.2);
+transform:translateY(-18px);
+box-shadow:0 40px 120px rgba(139,0,0,.25);
 }
 
-.card h3{
-color:#b30000;
-margin-bottom:20px;
-font-size:1.5rem;
-}
-
-/* ================= PARALLAX VIAJENS ARTÍSTICO ================= */
-.parallax{
-height:600px;
-position:relative;
-margin:0 8% 160px 8%;
-border-radius:50px;
-overflow:hidden;
-box-shadow:0 50px 120px rgba(179,0,0,.25);
-}
-
-.parallax-bg{
+.card::after{
+content:"";
 position:absolute;
 inset:0;
-background:url('IMG-20260228-WA0032.jpg') center/cover fixed;
-filter:brightness(.7);
-}
-
-.parallax-overlay{
-position:absolute;
-inset:0;
-background:linear-gradient(to right,rgba(179,0,0,.7),rgba(179,0,0,.3));
-}
-
-.parallax-content{
-position:absolute;
-z-index:2;
-color:#fff;
-bottom:70px;
-left:80px;
-max-width:550px;
-}
-
-.parallax-content h2{
-font-size:2.5rem;
-margin-bottom:20px;
-}
-
-/* ================= SOBRE IMPACTO ================= */
-.sobre{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:100px;
-align-items:center;
-}
-
-.sobre-img{
-position:relative;
-}
-
-.sobre-img img{
-width:100%;
-border-radius:40px;
-box-shadow:0 40px 100px rgba(0,0,0,.1);
+background:radial-gradient(circle at top left, rgba(139,0,0,.15), transparent 60%);
+opacity:0;
 transition:.6s;
 }
 
-.sobre-img img:hover{
-transform:scale(1.05);
+.card:hover::after{
+opacity:1;
 }
 
-.sobre-text h2{
-color:#b30000;
-font-size:2.5rem;
-margin-bottom:25px;
+.card img{
+width:100%;
+height:280px;
+object-fit:cover;
+transition:1.2s ease;
 }
 
-/* ================= FOOTER ================= */
-footer{
-background:#b30000;
-color:#fff;
+.card:hover img{
+transform:scale(1.12);
+}
+
+.card-content{
+padding:40px;
+}
+
+.card-content h3{
+color:var(--primary);
+margin-bottom:15px;
+font-weight:600;
+}
+
+.card-content p{
+line-height:1.8;
+color:#555;
+}
+
+/* CTA SUPREME */
+
+.cta{
+background:linear-gradient(140deg,var(--primary),var(--deep));
+color:white;
 text-align:center;
-padding:110px 20px;
+padding:170px 8%;
 }
 
-footer img{
-height:110px;
-margin-bottom:30px;
-filter:brightness(0) invert(1);
+.cta h2{
+font-size:2.4rem;
+margin-bottom:40px;
 }
+
+/* WHATSAPP SUM */
 
 .whatsapp{
 position:fixed;
 bottom:35px;
 right:35px;
+width:70px;
+height:70px;
 background:#25D366;
-color:#fff;
-padding:25px;
 border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
 font-size:24px;
-text-decoration:none;
+color:white;
 box-shadow:0 30px 70px rgba(0,0,0,.4);
-transition:.3s;
+transition:.5s;
+text-decoration:none;
 }
 
-.whatsapp:hover{transform:scale(1.2)}
+.whatsapp:hover{
+transform:scale(1.25);
+}
 
-/* ================= ANIMAÇÕES ================= */
+/* FOOTER */
+
+footer{
+background:#0a0a0a;
+color:white;
+text-align:center;
+padding:50px;
+font-size:.9rem;
+letter-spacing:.6px;
+}
+
+/* ANIMAÇÃO */
+
 @keyframes fadeUp{
-from{opacity:0;transform:translateY(50px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes float{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-15px)}
-}
-
-@keyframes zoom{
-from{transform:scale(1.15)}
-to{transform:scale(1.25)}
-}
-
-@media(max-width:900px){
-.hero-content h1{font-size:2.3rem}
-.sobre{grid-template-columns:1fr;text-align:center}
-.parallax-bg{background-attachment:scroll}
-.parallax-content{left:30px;bottom:40px}
+from{opacity:0;transform:translateY(80px);}
+to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
+
 <body>
 
-<header>
-<img src="IMG-20260228-WA0031.jpg" alt="Logo MGG">
+<div id="loader"><div class="loader"></div></div>
+
+<header id="header">
+<img src="logo.png">
 <nav>
-<a href="#servicos">Serviços</a>
-<a href="#sobre">Sobre</a>
-<a href="#contato">Contato</a>
+<a href="#saude">Planos</a>
+<a href="#viagens">Viagens</a>
+<a href="https://wa.me/5592994246242" target="_blank">Contato</a>
 </nav>
 </header>
 
 <section class="hero">
-<div class="hero-bg"></div>
-<div class="hero-overlay"></div>
 <div class="hero-content">
-<img src="IMG-20260228-WA0031.jpg" alt="Logo MGG">
-<h1>Proteção em Saúde. Liberdade Para Viajar.</h1>
-<p>Segurança para sua família. Planejamento para seus sonhos. Atendimento humano e excelência profissional.</p>
-<a href="https://wa.me/5592994246242" target="_blank">
-<button class="btn">Falar no WhatsApp</button>
-</a>
+<h1>Proteção para sua vida. Experiências para o seu mundo.</h1>
+<p>Excelência, confiança e atendimento premium em cada detalhe.</p>
+<a href="https://wa.me/5592994246242" class="btn">Fale no WhatsApp</a>
 </div>
 </section>
 
-<section id="servicos">
-<h2 class="section-title">Soluções Inteligentes</h2>
-<div class="services">
+<section id="saude">
+<div class="section-title">
+<h2>Planos de Saúde</h2>
+</div>
+<div class="cards">
 <div class="card">
-<h3>Planos de Saúde</h3>
-<p>Individuais, familiares e empresariais com as melhores operadoras.</p>
+<img src="saude.jpg">
+<div class="card-content">
+<h3>Planos Individuais</h3>
+<p>Proteção personalizada com as melhores operadoras do mercado.</p>
+</div>
 </div>
 <div class="card">
-<h3>Agência de Viagens</h3>
-<p>Pacotes, passagens e seguro viagem com total tranquilidade.</p>
+<img src="familia.jpg">
+<div class="card-content">
+<h3>Planos Familiares</h3>
+<p>Cuidado completo para quem você mais ama.</p>
 </div>
-<div class="card">
-<h3>Consultoria Premium</h3>
-<p>Atendimento personalizado para encontrar a melhor escolha.</p>
 </div>
 </div>
 </section>
 
-<div class="parallax">
-<div class="parallax-bg"></div>
-<div class="parallax-overlay"></div>
-<div class="parallax-content">
-<h2>Viaje com Segurança e Confiança</h2>
-<p>Experiências incríveis começam com planejamento profissional.</p>
+<section id="viagens">
+<div class="section-title">
+<h2>Agência de Viagens</h2>
+</div>
+<div class="cards">
+<div class="card">
+<img src="viagem1.jpg">
+<div class="card-content">
+<h3>Pacotes Nacionais</h3>
+<p>Experiências inesquecíveis com suporte completo.</p>
 </div>
 </div>
-
-<section id="sobre" class="sobre">
-<div class="sobre-text">
-<h2>Sobre a MGG</h2>
-<p>A MGG nasceu com o propósito de cuidar de famílias e realizar sonhos. Atuamos com ética, transparência e dedicação, oferecendo segurança em saúde e experiências inesquecíveis em viagens.</p>
+<div class="card">
+<img src="viagem2.jpg">
+<div class="card-content">
+<h3>Internacional</h3>
+<p>O mundo esperando por você com planejamento seguro.</p>
 </div>
-<div class="sobre-img">
-<img src="IMG-20260228-WA0033.jpg" alt="Imagem institucional MGG">
+</div>
 </div>
 </section>
 
-<footer id="contato">
-<img src="IMG-20260228-WA0031.jpg" alt="Logo MGG">
-<p>WhatsApp: (92) 99424-6242</p>
-<p>© 2026 MGG Corretora - Todos os direitos reservados</p>
+<section class="cta">
+<h2>Atendimento exclusivo e personalizado.</h2>
+<a href="https://wa.me/5592994246242" class="btn">Solicitar Consultoria</a>
+</section>
+
+<footer>
+© 2026 Sua Empresa | Saúde & Viagens
 </footer>
 
-<a href="https://wa.me/5592994246242" target="_blank" class="whatsapp">💬</a>
+<a href="https://wa.me/5592994246242" class="whatsapp" target="_blank">💬</a>
+
+<script>
+window.addEventListener("load",()=>{
+document.getElementById("loader").style.display="none";
+});
+
+window.addEventListener("scroll",()=>{
+document.getElementById("header").classList.toggle("scrolled",window.scrollY>50);
+
+document.querySelectorAll(".card").forEach(card=>{
+if(card.getBoundingClientRect().top < window.innerHeight-150){
+card.classList.add("show");
+}
+});
+});
+</script>
 
 </body>
 </html>
